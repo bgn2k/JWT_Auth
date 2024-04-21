@@ -1,0 +1,51 @@
+<%- include('partials/header'); -%>
+<form>
+    <h2>Sign Up!</h2>
+    <label for="email">
+        Email
+    </label>
+    <input type="text" name="email" required />
+    <div class="email error"></div>
+    <label for="password">
+        Password
+    </label>
+    <input type="password" name="password" required />
+    <div class="password error"></div>
+    <button>Sign Up</button>
+</form>
+<script>
+    const form = document.querySelector('form')
+    const emailError = document.querySelector('.email.error')
+    const passwordError = document.querySelector('.password.error')
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        emailError.textContent = ''
+        passwordError.textContent = '' 
+        //get the values from the screen
+        //here form.email because in the form block for the email field we have mentioned name = 'email' so whatever we have written there should also be added here.
+        const email = form.email.value
+        const password = form.password.value
+        console.log('Email and Password captured from the fields of UI successfully!')
+        try {
+            const result = await fetch('/signup', {
+                method : 'POST',
+                body : JSON.stringify({email, password}),
+                headers : {
+                    'Content-Type' : 'application/json'
+                }
+            })
+            const data = await result.json()
+            console.log(data)
+            if(data.errBody){
+                emailError.textContent = data.errBody.email
+                passwordError.textContent = data.errBody.password 
+            }
+            if(data.user){
+                location.assign('/')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    })
+</script>
+<%- include('partials/footer'); -%>

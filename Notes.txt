@@ -1,0 +1,79 @@
+Auth Routes:
+
+/signup
+GET
+sign up page
+
+/login
+GET
+log in page
+
+/signup
+POST
+create a new user in db
+
+/login
+POST
+authenticate a current user
+
+/logout
+GET
+log a user out
+============================================
+21 Apr 2024
+===========
+Creating User model.
+
+
+Exception handling and api validations for the userSchema
+
+Encrypting the password and after that sending it to the db
+
+Encrypting algo used is the bcrypt package
+and this is done using the salt + password using the hashing algo and the package that does this easy is bcrypt
+
+Cookies
+=======
+Kindly refer this link for more info on cookies:
+ https://www.youtube.com/watch?v=mevc_dl1i1I&list=PL4cUxeGkcC9iqqESP8335DA5cRFp8loyp&index=9
+
+ //cookies
+app.get('/set-cookies', (req,res) => {
+  //Here the Set-Cookie name as it is matters if you dont write the same then it will show you the added/present cookies in the browser.
+  //Traditional way of working with cookies
+  //FYI !Traditional but original way of working with cookies without any usage of the 3rd party pkgs like cookie-parser if you want to do then below is how you will need to write.
+  // res.setHeader('Set-Cookie', 'newUser=true')
+  // res.cookie('newUser', false)
+  res.cookie('name', 'Narendra', {maxAge : 1000 * 60 * 60 * 24, httpOnly : true})
+res.send('you got the cookies')
+})
+app.get('/read-cookies', (req,res) => {
+  const cookies = req.cookies
+  console.log(cookies)
+  res.json(cookies)
+})
+
+Basically provides a way to store data into a browser,it can store anything for some amount of period
+after which it will be automatically deleted
+
+So initially its session based timing mechanism that means once you close the browser all the cookies gets discarded.
+
+so you can also set the time/limit until which the cookies can last
+and you can also use a third party cookie packages to ease the way of coding the cookies which is kinda repetitive and boring
+the 3rd party pkg that you can use is : cookie-parser
+
+and you can also add some security measures in order to keep the cookies accessible only when you are accessable like the HTTP secure URL So in that way, when you're using an HTTP only you are the cookies won't be accessible and will not be visible. If the security check for the HTTP secure your is true, and you can also set the time limits as I mentioned earlier, it is not just it is automatically will be deleted after the browser is being closed, so you have some amount of flexibility and controllability over the cookies as well as the cookie Parser a package
+
+
+this is how we will be using the JWT to store and to identify the users
+
+JWT:
+====
+Kindly refer the given link below to know more about the theory behind the JWT working.
+
+https://www.youtube.com/watch?v=LZq0G8WUaII&list=PL4cUxeGkcC9iqqESP8335DA5cRFp8loyp&index=10
+
+A JWT consists of header, payload and signature, all of them combine together to form a secret key, whereas the secret key is nothing but a secure secret string
+In other words, a JWT token is a sum of headers, payload and signature
+
+So this is why if you notice in that JWT website, there are three blocks colour coded differently because there are three sections of a JWT token which are mentioned above.
