@@ -26,9 +26,23 @@ this.password = await bcyrpt.hash(this.password, salt)
 console.log('Encrypted Password: ',this.password)
 next()
 })
+//Static method for login funcitonality
+userSchema.statics.login = async function(email, password){
+  // here be careful with the word statics because earlier I wrote only static because of which this method login was not able to function properly Since this is a combination of front-end as well as middle, where you won't be able to get the exact suggestions from the intelligence of code because of which the author of suggestion will not be available, so you need to make sure that you are writing the right keyword else you will be getting other in the console. In that case, you should properly console the exact error that you will be getting in the browser, this is just an FYI
+const user = await this.findOne({email})
+if(user){
+  const auth = await bcyrpt.compare(password, user.password)
+  if(auth){
+    return user
+  }
+  throw Error('incorrect password')
+}
+throw Error('incorrect email')
+}
 userSchema.post('save', function(doc, next) {
   console.log('New user created and saved', doc)
   next()
 })
+
 const User = mongoose.model("user", userSchema);
 module.exports = User;
